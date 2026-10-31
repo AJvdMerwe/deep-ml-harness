@@ -1,0 +1,15 @@
+# Host environment for the harness (agent, CLI, tests). Agent-generated code runs in the Docker
+# sandbox, whose Python stack is defined separately in docker/requirements-sandbox.txt.
+#
+#   conda env create -f environment.yml      # run from the project root (the "." below is relative to it)
+#   conda activate ml-harness
+#   conda env update -f environment.yml --prune    # after editing this file
+name: ml-harness
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip
+  - pip:
+      # Pick the extras for your LLM backend: ollama | openai (vLLM, LM Studio, llama.cpp) | anthropic
+      - "-e .[dev,ollama]"

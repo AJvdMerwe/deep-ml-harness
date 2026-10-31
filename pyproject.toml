@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ml-harness"
+version = "0.1.0"
+description = "Deep-agent harness for data research and machine learning (LangChain DeepAgents)"
+requires-python = ">=3.11"
+dependencies = [
+    "deepagents>=0.7",
+    "langchain>=1.0",
+    "langgraph>=1.0",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+anthropic = ["langchain-anthropic>=1.0"]
+ollama = ["langchain-ollama>=0.3"]
+openai = ["langchain-openai>=0.3"]   # also used for vLLM / LM Studio / llama.cpp (OpenAI-compatible)
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+
+[project.scripts]
+ml-harness = "ml_harness.app.cli:main"
+ml-harness-sample-data = "ml_harness.dev.sample_data:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ml_harness"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "tests"]
+asyncio_mode = "auto"

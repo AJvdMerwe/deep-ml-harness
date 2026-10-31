@@ -1,0 +1,17 @@
+# Isolated execution image for agent-generated code. No credentials, no network (enforced at `docker run`).
+FROM python:3.12-slim
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends libgomp1 \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY docker/requirements-sandbox.txt /tmp/requirements.txt
+RUN pip install --no-cache-dir -r /tmp/requirements.txt
+
+ENV MPLBACKEND=Agg \
+    PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+WORKDIR /workspace
+# The harness passes --user <host uid:gid> so bind-mounted outputs stay owned by the host user.
+CMD ["python", "-"]

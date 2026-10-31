@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.egg-info/
+.env
+data/raw/*
+data/processed/*
+artifacts/models/*
+artifacts/reports/*
+artifacts/logs/*
+plots/**/*.png
+!**/.gitkeep

@@ -1,0 +1,5 @@
+data/
+artifacts/
+plots/
+.venv/
+.git/

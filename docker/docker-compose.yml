@@ -1,0 +1,23 @@
+# Build the sandbox image:   docker compose -f docker/docker-compose.yml --profile build build
+# Debug shell in the sandbox: docker compose -f docker/docker-compose.yml run --rm sandbox-shell
+services:
+  sandbox:
+    profiles: ["build"]
+    image: ml-harness-sandbox:latest
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.sandbox
+    command: ["python", "-c", "import xgboost, sklearn, pandas; print('sandbox ok')"]
+
+  sandbox-shell:
+    profiles: ["debug"]
+    image: ml-harness-sandbox:latest
+    network_mode: none
+    stdin_open: true
+    tty: true
+    command: ["bash"]
+    volumes:
+      - ../data/raw:/workspace/data/raw:ro
+      - ../data/processed:/workspace/data/processed
+      - ../artifacts:/workspace/artifacts
+      - ../plots:/workspace/plots
